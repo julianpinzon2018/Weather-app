@@ -4,6 +4,8 @@
 
 .dayWeather-list {
   display: flex;
+  justify-content: space-between;
+  align-items: center;
   overflow: auto;
   list-style: none;
   padding: initial;
@@ -50,9 +52,11 @@
   gap: 1rem;
 }
 
-.dayWeather-summary > * {
+.daySummary {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.is-hidden {
-  display: none;
+.dayWeather-summary > * {
 }

@@ -1,4 +1,4 @@
-export const API_KEI = "91e18aced4d218e3e3d77744dda7bad7";
+export const API_KEY = "4b7efa8ea40a6db14dc5e766f43ec27d";
 export const BASE_API = "https://api.openweathermap.org/data/2.5/";
 export const weatherConditionsCodes = {
   2: "rainy",

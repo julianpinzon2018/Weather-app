@@ -4,18 +4,18 @@ const defaultConfig = {
   animatable: true,
 };
 
-export default function draggble($element, config = defaultConfig) {
+export default function draggable($element, config = defaultConfig) {
   if (!($element instanceof HTMLElement)) {
     return console.warn(
-      `Èlemento invalido se esperaba un HTMLElement y  se recibió ${$element}`
+      `Elemento invalido, se esperaba un HTMLElement y se recibió ${$element}`
     );
   }
 
   let isOpen = config.open;
+
   let isDragging = false;
   const elementRect = $element.getBoundingClientRect();
   const ELEMENT_BLOCK_SIZE = elementRect.height;
-
   const $marker = $element.querySelector("[data-marker]");
   const MARKER_BLOCK_SIZE = $marker.getBoundingClientRect().height;
 
@@ -25,50 +25,54 @@ export default function draggble($element, config = defaultConfig) {
 
   isOpen ? open() : close();
   let startY = 0;
+
   $marker.addEventListener("click", handleClick);
   $marker.addEventListener("pointerdown", handlePointerDown);
-  $marker.addEventListener("pointerup", handlePointerUp);
+  $marker.addEventListener("pinterup", handlePointerUp);
   $marker.addEventListener("pointerout", handlePointerOut);
   $marker.addEventListener("pointercancel", handlePointerCancel);
   $marker.addEventListener("pointermove", handlePointerMove);
   if (config.animatable) {
-    setAnimations;
+    setAnimations();
   }
-  function handlePointerUp() {
-    logger("Pointer UP");
-    dragEnd();
-  }
-  function handlePointerOut() {
-    logger("Pointer OUT");
-    dragEnd();
+  function handlePointerMove() {
+    logger("Pointer Move");
+    drag(event);
   }
   function handlePointerCancel() {
     logger("Pointer Cancel");
     dragEnd();
   }
-  function handlePointerDown(event) {
+  function handlePointerOut() {
+    logger("Pointer Out");
+    dragEnd();
+  }
+  function handlePointerUp() {
+    logger("Pointer Up");
+    dragEnd();
+  }
+
+  function handlePointerDown() {
     logger("Pointer Down");
     startDrag(event);
   }
+
   function handleClick(event) {
     logger("CLICK");
     toggle();
   }
-  function handlePointerMove(event) {
-    logger("Pointer MOVE");
-    drag(event);
-  }
+
   function pageY(event) {
     return event.pageY || event.touches[0].pageY;
   }
-  function startDrag() {
+  function startDrag(event) {
     isDragging = true;
     startY = pageY(event);
   }
-  function setAnimations() {
-    $element.style.transition = "marginBottom .3s";
-  }
 
+  function setAnimations() {
+    $element.style.transition = "margin-bottom .3s";
+  }
   function bounce() {
     if (widgetPosition < ELEMENT_BLOCK_SIZE / 2) {
       return open();
@@ -83,9 +87,10 @@ export default function draggble($element, config = defaultConfig) {
   function toggle() {
     if (!isDragging) {
       if (!isOpen) {
-        return open();
+        open();
+      } else {
+        close();
       }
-      return close();
     }
   }
 
@@ -96,7 +101,7 @@ export default function draggble($element, config = defaultConfig) {
   }
 
   function open() {
-    logger("Abrir Widget");
+    logger("Abrir Wifget");
     isOpen = true;
     widgetPosition = VISIBLE_Y_POSITION;
     setWidgetPosition(widgetPosition);
@@ -117,11 +122,10 @@ export default function draggble($element, config = defaultConfig) {
     const cursorY = pageY(event);
     const movementY = cursorY - startY;
     widgetPosition = widgetPosition + movementY;
-    logger(movementY);
-    startY = cursorY;
     if (widgetPosition > HIDDEN_Y_POSITION) {
       return false;
     }
+    startY = cursorY;
     setWidgetPosition(widgetPosition);
   }
 }

@@ -2,7 +2,8 @@ const $tabContainer = document.querySelector("#tabs");
 const $tabList = $tabContainer.querySelectorAll(".tab");
 
 const today = new Date();
-let weeday = today.getDay();
+let weekday = today.getDay();
+
 const week = [
   "Domingo",
   "Lunes",
@@ -19,24 +20,25 @@ function nextDay(day) {
   }
   return day + 1;
 }
+
 $tabList.forEach(($tab, index) => {
   $tab.addEventListener("click", handleSelectTabClick);
   if (index === 0) {
     $tab.textContent = "Hoy";
-    weeday = nextDay(weeday);
+    weekday = nextDay(weekday);
     return false;
   }
-  $tab.textContent = week[weeday];
-  weeday = nextDay(weeday);
+  $tab.textContent = week[weekday];
+  weekday = nextDay(weekday);
 });
 
 function handleSelectTabClick(event) {
   const $tabSelected = event.target;
-  const $tabActive = document.querySelector('.tab[aria-selected="true"]');
+  const $tabActive = document.querySelector('.tab[aria-selected="true');
   $tabActive.removeAttribute("aria-selected");
   $tabSelected.setAttribute("aria-selected", true);
   const id = $tabSelected.id;
-  const $tabPanel = document.querySelector(`[aria-labelledby=${id}]`);
+  const $tabPanel = document.querySelector(`[aria-labelledby=${id}`);
   const $tabPanelSelected = document.querySelector(`.tabPanel:not([hidden])`);
   $tabPanel.hidden = false;
   $tabPanelSelected.hidden = true;
